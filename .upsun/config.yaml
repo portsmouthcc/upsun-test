@@ -4,6 +4,9 @@ applications:
     relationships:
       mariadb: "db:mysql"
       redis: "cache:redis"
+      solr:
+        service: solr
+        endpoint: main
     mounts:
       # The default Drupal files directory.
       "/web/sites/default/files":
@@ -94,6 +97,15 @@ services:
     type: mariadb:11.8
   cache:
     type: redis:8.0
+  solr:
+    type: solr:9.9
+    configuration:
+      cores:
+        mainindex:
+          conf_dir: !archive "core1-conf"
+      endpoints:
+        main:
+          core: mainindex
 routes:
   "https://{default}/":
     type: upstream
